@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name="com.iqbalansyor.weighbridgetruck.WtApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,7 +14,7 @@
         android:theme="@style/Theme.Weighbridgetruck"
         tools:targetApi="31">
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.iqbalansyor.weighbridgetruck.feature_truck.presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Weighbridgetruck">
             <intent-filter>
