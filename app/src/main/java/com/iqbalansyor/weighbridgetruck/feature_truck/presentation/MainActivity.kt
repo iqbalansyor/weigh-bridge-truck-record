@@ -8,9 +8,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.addedittruck.AddEditTruckScreen
 import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.trucklist.TrucksScreen
 import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.trucklist.TrucksViewModel
 import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.util.Screen
@@ -37,7 +40,22 @@ class MainActivity : ComponentActivity() {
                         composable(route = Screen.TruckListScreen.route) {
                             TrucksScreen(navController = navController, state = state)
                         }
-                        // TODO: Add Edit Truck here
+                        composable(
+                            route = Screen.AddEditTruckScreen.route +
+                                    "?truckId={truckId}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "truckId"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                }
+                            )
+                        ) {
+                            AddEditTruckScreen(
+                                navController = navController
+                            )
+                        }
                     }
                 }
             }

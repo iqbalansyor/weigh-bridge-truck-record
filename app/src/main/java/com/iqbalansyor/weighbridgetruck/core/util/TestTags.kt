@@ -2,7 +2,10 @@ package com.iqbalansyor.weighbridgetruck.core.util
 
 object TestTags {
     const val ORDER_SECTION = "ORDER_SECTION"
-    const val TITLE_TEXT_FIELD = "TITLE_TEXT_FIELD"
-    const val CONTENT_TEXT_FIELD = "CONTENT_TEXT_FIELD"
-    const val NOTE_ITEM = "NOTE_ITEM"
+    const val LICENSE_TEXT_FIELD = "LICENSE_TEXT_FIELD"
+    const val DRIVER_TEXT_FIELD = "DRIVER_TEXT_FIELD"
+    const val TRUCK_ITEM = "NOTE_ITEM"
+    const val INBOUND_WEIGHT_TEXT_FIELD = "INBOUND_WEIGHT_TEXT_FIELD"
+    const val OUTBOUND_WEIGHT_TEXT_FIELD = "OUTBOUND_WEIGHT_TEXT_FIELD"
+    const val NET_WEIGHT_TEXT_FIELD = "NET_WEIGHT_TEXT_FIELD"
 }
