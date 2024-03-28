@@ -21,6 +21,7 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -46,6 +47,7 @@ import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.trucklist.com
 import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.trucklist.component.TruckItem
 import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.util.Screen
 import com.iqbalansyor.weighbridgetruck.util.TestTags
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -161,11 +163,17 @@ fun TrucksScreen(
                                                 "?truckId=${truck.id}"
                                     )
                                 },
-                            onEditClick = {
-                                navController.navigate(
-                                    Screen.AddEditTruckScreen.route +
-                                            "?truckId=${truck.id}"
-                                )
+                            onDeleteClick = {
+                                viewModel.onEvent(TrucksEvent.DeleteTruck(truck))
+                                scope.launch {
+                                    val result = scaffoldState.snackbarHostState.showSnackbar(
+                                        message = "Truck deleted",
+                                        actionLabel = "restore"
+                                    )
+                                    if (result == SnackbarResult.ActionPerformed) {
+                                        viewModel.onEvent(TrucksEvent.RestoreTruck)
+                                    }
+                                }
                             }
                         )
                         Spacer(modifier = Modifier.height(16.dp))

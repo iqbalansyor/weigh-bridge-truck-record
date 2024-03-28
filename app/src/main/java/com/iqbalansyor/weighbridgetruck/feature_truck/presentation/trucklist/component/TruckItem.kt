@@ -15,6 +15,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,7 +43,7 @@ fun TruckItem(
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 10.dp,
     cutCornerSize: Dp = 0.dp,
-    onEditClick: () -> Unit
+    onDeleteClick: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -130,13 +131,13 @@ fun TruckItem(
             )
         }
         IconButton(
-            onClick = onEditClick,
+            onClick = onDeleteClick,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(bottom = 8.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.Edit,
+                imageVector = Icons.Default.Delete,
                 contentDescription = "Edit Truck",
                 tint = MaterialTheme.colors.onSurface
             )
