@@ -35,8 +35,8 @@ class AddEditTruckViewModelTest {
 
     @Test
     fun `onEvent with EnteredTruckLicense should set license number with uppercase`() = run {
-        val testValue = "test"
-        viewModel.onEvent(AddEditTruckEvent.EnteredTruckLicense("test"))
+        val testValue = "b1234xz"
+        viewModel.onEvent(AddEditTruckEvent.EnteredTruckLicense(testValue))
         assert(viewModel.truckLicense.value.text == testValue.uppercase(Locale.ROOT))
     }
 
