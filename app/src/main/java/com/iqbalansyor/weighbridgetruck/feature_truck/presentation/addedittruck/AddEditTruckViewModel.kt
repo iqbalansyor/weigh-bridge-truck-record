@@ -352,6 +352,8 @@ class AddEditTruckViewModel @Inject constructor(
             }
         }
 
+        if(eventText.length > 7) return
+
         if(eventText.length != 7) {
             _truckLicense.value = truckLicense.value.copy(
                 isError = true,
