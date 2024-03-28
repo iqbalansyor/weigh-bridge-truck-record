@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.TruckListScreen.route
                     ) {
                         composable(route = Screen.TruckListScreen.route) {
-                            TrucksScreen(navController = navController, state = state)
+                            TrucksScreen(navController = navController, state = state, viewModel = viewModel)
                         }
                         composable(
                             route = Screen.AddEditTruckScreen.route +

@@ -120,7 +120,7 @@ class AddEditTruckViewModel @Inject constructor(
                 )
             }
 
-            is AddEditTruckEvent.SaveNote -> {
+            is AddEditTruckEvent.SaveTruck -> {
                 viewModelScope.launch {
                     try {
                         truckUseCases.addTruck(
@@ -130,10 +130,11 @@ class AddEditTruckViewModel @Inject constructor(
                                 timestamp = System.currentTimeMillis(),
                                 inboundWeight = _inboundWeight.value.text.toFloatOrNull() ?: 0.0f,
                                 outboundWeight = _outboundWeight.value.text.toFloatOrNull() ?: 0.0f,
-                                id = if (currentTruckId == null) System.currentTimeMillis().toInt() else currentTruckId
+                                id = if (currentTruckId == null) System.currentTimeMillis()
+                                    .toInt() else currentTruckId
                             )
                         )
-                        _eventFlow.emit(UiEvent.SaveNote)
+                        _eventFlow.emit(UiEvent.SaveTruck)
                     } catch (e: InvalidTruckException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
@@ -191,8 +192,9 @@ class AddEditTruckViewModel @Inject constructor(
             )
         }
     }
+
     sealed class UiEvent {
         data class ShowSnackbar(val message: String) : UiEvent()
-        object SaveNote : UiEvent()
+        object SaveTruck : UiEvent()
     }
 }

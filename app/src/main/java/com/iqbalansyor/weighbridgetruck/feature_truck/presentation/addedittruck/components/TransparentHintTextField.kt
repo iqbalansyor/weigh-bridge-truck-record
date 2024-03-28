@@ -2,6 +2,7 @@ package com.iqbalansyor.weighbridgetruck.feature_truck.presentation.addedittruck
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -31,7 +32,7 @@ fun TransparentHintTextField(
     errorMessage: String? = null,
     placeholder: String = ""
 ) {
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
@@ -58,6 +59,12 @@ fun TransparentHintTextField(
             keyboardOptions = keyboardOptions,
             isError = !errorMessage.isNullOrBlank(),
         )
+        if (!errorMessage.isNullOrBlank()) {
+            Text(
+                text = errorMessage,
+                color = Color.Red
+            )
+        }
     }
 }
 

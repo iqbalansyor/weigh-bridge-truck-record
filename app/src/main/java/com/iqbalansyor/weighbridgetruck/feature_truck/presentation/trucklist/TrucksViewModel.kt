@@ -30,7 +30,7 @@ class TrucksViewModel @Inject constructor(
     private var getTrucksJob: Job? = null
 
     init {
-        getTrucks(TruckOrder.Date(OrderType.Descending))
+        getTrucks(state.value.truckOrder)
     }
 
     fun onEvent(event: TrucksEvent) {

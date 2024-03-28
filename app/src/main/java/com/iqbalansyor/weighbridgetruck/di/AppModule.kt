@@ -23,7 +23,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNoteDatabase(@ApplicationContext context: Context): TruckDatabase {
+    fun provideTruckDatabase(@ApplicationContext context: Context): TruckDatabase {
         return Room.databaseBuilder(
             context,
             TruckDatabase::class.java,
@@ -33,13 +33,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNoteRepository(db: TruckDatabase): TruckRepository {
+    fun provideTruckRepository(db: TruckDatabase): TruckRepository {
         return TruckRepositoryImpl(db.truckDao)
     }
 
     @Provides
     @Singleton
-    fun provideNoteUseCases(repository: TruckRepository): TruckUseCases {
+    fun provideTruckUseCases(repository: TruckRepository): TruckUseCases {
         return TruckUseCases(
             getTrucks = GetTrucks(repository),
             deleteTruck = DeleteTruck(repository),

@@ -20,19 +20,19 @@ class AddTruckTest {
     }
 
     @Test(expected = InvalidTruckException::class)
-    fun `GIVEN a note WHEN insert into db with no license THEN throws exception`() = runBlocking {
+    fun `GIVEN a truck WHEN insert into db with no license THEN throws exception`() = runBlocking {
         val truck = Truck("", "driver", 1, 1.0f, 1.0f)
         addTruck(truck)
     }
 
     @Test(expected = InvalidTruckException::class)
-    fun `GIVEN a note WHEN insert into db with no driver THEN throws exception`() = runBlocking {
+    fun `GIVEN a truck WHEN insert into db with no driver THEN throws exception`() = runBlocking {
         val truck = Truck("license", "", 1, 1.0f, 1.0f)
         addTruck(truck)
     }
 
     @Test
-    fun `GIVEN a note WHEN insert into db THEN inserted`() = runBlocking {
+    fun `GIVEN a truck WHEN insert into db THEN inserted`() = runBlocking {
         val truck = Truck("license", "driver", 1, 1.0f, 1.0f, id = 1)
         addTruck(truck)
         val insertedTruck = fakeRepository.getTruckById(1)

@@ -55,7 +55,7 @@ fun AddEditTruckScreen(
                     )
                 }
 
-                is AddEditTruckViewModel.UiEvent.SaveNote -> {
+                is AddEditTruckViewModel.UiEvent.SaveTruck -> {
                     navController.navigateUp()
                 }
             }
@@ -66,7 +66,7 @@ fun AddEditTruckScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    viewModel.onEvent(AddEditTruckEvent.SaveNote)
+                    viewModel.onEvent(AddEditTruckEvent.SaveTruck)
                 },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
@@ -143,13 +143,9 @@ fun AddEditTruckScreen(
                 text = netWeightState.text,
                 hint = netWeightState.hint,
                 errorMessage = if (netWeightState.isError) "error" else null,
-                onValueChange = {
-                    viewModel.onEvent(AddEditTruckEvent.EnteredOutboundWeight(it))
-                },
+                onValueChange = {},
                 placeholder = "0",
-                onFocusChange = {
-                    viewModel.onEvent(AddEditTruckEvent.ChangeOutboundWeightFocus(it))
-                },
+                onFocusChange = {},
                 testTag = TestTags.OUTBOUND_WEIGHT_TEXT_FIELD,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number

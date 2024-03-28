@@ -11,5 +11,5 @@ sealed class AddEditTruckEvent {
     data class ChangeInboundWeightFocus(val focusState: FocusState) : AddEditTruckEvent()
     data class EnteredOutboundWeight(val value: String) : AddEditTruckEvent()
     data class ChangeOutboundWeightFocus(val focusState: FocusState) : AddEditTruckEvent()
-    object SaveNote : AddEditTruckEvent()
+    object SaveTruck : AddEditTruckEvent()
 }

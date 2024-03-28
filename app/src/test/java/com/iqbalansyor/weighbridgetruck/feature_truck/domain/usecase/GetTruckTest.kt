@@ -38,7 +38,6 @@ class GetTruckTest {
         val findTruck = getTruckTest(0)
 
         assertThat(findTruck).isNull()
-
     }
 
 }
