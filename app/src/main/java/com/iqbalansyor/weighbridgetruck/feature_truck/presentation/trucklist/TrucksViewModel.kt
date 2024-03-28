@@ -3,6 +3,7 @@ package com.iqbalansyor.weighbridgetruck.feature_truck.presentation.trucklist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iqbalansyor.weighbridgetruck.feature_truck.domain.model.Truck
+import com.iqbalansyor.weighbridgetruck.feature_truck.domain.usecase.TruckUseCases
 import com.iqbalansyor.weighbridgetruck.feature_truck.domain.util.OrderType
 import com.iqbalansyor.weighbridgetruck.feature_truck.domain.util.TruckOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,12 +12,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TrucksViewModel @Inject constructor(
-
+    private val truckUseCases: TruckUseCases
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(TrucksState())
@@ -27,7 +30,7 @@ class TrucksViewModel @Inject constructor(
     private var getTrucksJob: Job? = null
 
     init {
-        getNotes(TruckOrder.Date(OrderType.Descending))
+        getTrucks(TruckOrder.Date(OrderType.Descending))
     }
 
     fun onEvent(event: TrucksEvent) {
@@ -38,7 +41,10 @@ class TrucksViewModel @Inject constructor(
                 ) {
                     return
                 }
-                getNotes(event.truckOrder)
+                _state.value = state.value.copy(
+                    truckOrder = event.truckOrder
+                )
+                getTrucks(event.truckOrder)
             }
 
             is TrucksEvent.DeleteTruck -> {
@@ -61,27 +67,16 @@ class TrucksViewModel @Inject constructor(
         }
     }
 
-    fun getNotes(order: TruckOrder) {
+    fun getTrucks(order: TruckOrder) {
         getTrucksJob?.cancel()
-//        getTrucksJob = truckUseCase.getNotes(order)
-//            .onEach { truck ->
-//                _state.value = state.value.copy(
-//                    truck = truck,
-//                    truckOrder = order
-//                )
-//            }
-//            .launchIn(viewModelScope)
-
-        GlobalScope.launch {
-            println("Before delay")
-            delay(3000) // Simulate a delay of 3 seconds
-            _state.value = state.value.copy(
-                trucks = listOf(
-                    "A", "B", "C"
-                ),
-                truckOrder = order
-            )
-        }
+        getTrucksJob = truckUseCases.getTrucks(order)
+            .onEach { trucks ->
+                _state.value = state.value.copy(
+                    trucks = trucks,
+                    truckOrder = order
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     fun setState(state: TrucksState) {

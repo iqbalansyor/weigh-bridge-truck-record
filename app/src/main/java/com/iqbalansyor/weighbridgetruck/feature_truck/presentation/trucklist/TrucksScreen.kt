@@ -74,7 +74,7 @@ fun TrucksScreen(
                 },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Añadir nota")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add truck")
             }
         },
         scaffoldState = scaffoldState
@@ -104,14 +104,12 @@ fun TrucksScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Sort,
-                        contentDescription = "Ordenar"
+                        contentDescription = "Sort"
                     )
                 }
             }
             AnimatedVisibility(
-                visible = state.isOrderSectionVisible,
-                enter = fadeIn() + slideInVertically(),
-                exit = fadeOut() + slideOutVertically()
+                visible = true
             ) {
                 OrderSection(
                     modifier = Modifier
@@ -129,43 +127,26 @@ fun TrucksScreen(
                 items(state.trucks) { truck ->
                     TruckItem(
                         truck = Truck(
-                            licenseNumber = "BA 5555 II",
-                            driver = "Driver jon",
-                            timestamp = System.currentTimeMillis(),
-                            inboundWeight = 0.0f,
-                            outboundWeight = 1.0f,
-                            id = 1
+                            licenseNumber = truck.licenseNumber,
+                            driver = truck.driver,
+                            timestamp = truck.timestamp,
+                            inboundWeight = truck.inboundWeight,
+                            outboundWeight = truck.outboundWeight,
+                            id = truck.id
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
                                 navController.navigate(
                                     Screen.AddEditTruckScreen.route +
-                                            "?truckId=${1}"
+                                            "?truckId=${truck.id}"
                                 )
                             },
                         onEditClick = {
-                            viewModel.onEvent(
-                                TrucksEvent.DeleteTruck(
-                                    Truck(
-                                        licenseNumber = "license",
-                                        driver = "driver",
-                                        timestamp = System.currentTimeMillis(),
-                                        inboundWeight = 0.0f,
-                                        outboundWeight = 1.0f,
-                                        id = 1
-                                    )
-                                )
+                            navController.navigate(
+                                Screen.AddEditTruckScreen.route +
+                                        "?truckId=${truck.id}"
                             )
-                            scope.launch {
-                                val result = scaffoldState.snackbarHostState.showSnackbar(
-                                    message = "Nota eliminada",
-                                    actionLabel = "Deshacer"
-                                )
-                                if (result == SnackbarResult.ActionPerformed) {
-
-                                }
-                            }
                         }
                     )
                     Spacer(modifier = Modifier.height(16.dp))

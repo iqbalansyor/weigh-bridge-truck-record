@@ -6,6 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iqbalansyor.weighbridgetruck.feature_truck.domain.model.InvalidTruckException
+import com.iqbalansyor.weighbridgetruck.feature_truck.domain.model.Truck
+import com.iqbalansyor.weighbridgetruck.feature_truck.domain.usecase.TruckUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -14,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditTruckViewModel @Inject constructor(
+    private val truckUseCases: TruckUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -55,13 +58,35 @@ class AddEditTruckViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var currentNoteId: Int? = null
+    private var currentTruckId: Int? = null
 
     init {
-        savedStateHandle.get<Int>("noteId")?.let { noteId ->
-            if (noteId != -1) {
+        savedStateHandle.get<Int>("truckId")?.let { truckId ->
+            if (truckId != -1) {
                 viewModelScope.launch {
-                    // todo handle
+                    truckUseCases.getTruck(truckId)?.also { truck ->
+                        currentTruckId = truck.id
+                        _truckLicense.value = _truckLicense.value.copy(
+                            text = truck.licenseNumber,
+                            isHintVisible = false
+                        )
+                        _driver.value = _driver.value.copy(
+                            text = truck.driver,
+                            isHintVisible = false
+                        )
+                        _inboundWeight.value = _inboundWeight.value.copy(
+                            text = truck.inboundWeight.toString(),
+                            isHintVisible = false
+                        )
+                        _outboundWeight.value = _outboundWeight.value.copy(
+                            text = truck.outboundWeight.toString(),
+                            isHintVisible = false
+                        )
+                        _netWeight.value = _outboundWeight.value.copy(
+                            text = (truck.outboundWeight - truck.inboundWeight).toString(),
+                            isHintVisible = false
+                        )
+                    }
                 }
             }
         }
@@ -98,12 +123,21 @@ class AddEditTruckViewModel @Inject constructor(
             is AddEditTruckEvent.SaveNote -> {
                 viewModelScope.launch {
                     try {
-                        // todo
+                        truckUseCases.addTruck(
+                            Truck(
+                                licenseNumber = _truckLicense.value.text,
+                                driver = _driver.value.text,
+                                timestamp = System.currentTimeMillis(),
+                                inboundWeight = _inboundWeight.value.text.toFloatOrNull() ?: 0.0f,
+                                outboundWeight = _outboundWeight.value.text.toFloatOrNull() ?: 0.0f,
+                                id = if (currentTruckId == null) System.currentTimeMillis().toInt() else currentTruckId
+                            )
+                        )
                         _eventFlow.emit(UiEvent.SaveNote)
                     } catch (e: InvalidTruckException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
-                                message = e.message ?: "Somethings wrong"
+                                message = e.message ?: "Please check your input"
                             )
                         )
                     }

@@ -34,13 +34,13 @@ fun OrderSection(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             DefaultRadioButton(
-                text = "Título",
-                selected = truckOrder is TruckOrder.Title,
-                onSelect = { onOrderChange(TruckOrder.Title(truckOrder.orderType)) }
+                text = "Id",
+                selected = truckOrder is TruckOrder.Id,
+                onSelect = { onOrderChange(TruckOrder.Id(truckOrder.orderType)) }
             )
             Spacer(modifier = Modifier.width(8.dp))
             DefaultRadioButton(
-                text = "Fecha",
+                text = "Date",
                 selected = truckOrder is TruckOrder.Date,
                 onSelect = { onOrderChange(TruckOrder.Date(truckOrder.orderType)) }
             )
@@ -61,7 +61,7 @@ fun OrderSection(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             DefaultRadioButton(
-                text = "Ascendente",
+                text = "Ascending",
                 selected = truckOrder.orderType is OrderType.Ascending,
                 onSelect = {
                     onOrderChange(truckOrder.copy(OrderType.Ascending))
@@ -73,7 +73,7 @@ fun OrderSection(
             )
             Spacer(modifier = Modifier.width(8.dp))
             DefaultRadioButton(
-                text = "Descendente",
+                text = "Descending",
                 selected = truckOrder.orderType is OrderType.Descending,
                 onSelect = {
                     onOrderChange(truckOrder.copy(OrderType.Descending))

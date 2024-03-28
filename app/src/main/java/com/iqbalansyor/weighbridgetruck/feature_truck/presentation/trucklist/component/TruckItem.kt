@@ -58,7 +58,7 @@ fun TruckItem(
             }
             clipPath(clipPath) {
                 drawRoundRect(
-                    color = Color(LightGreen.toArgb()),
+                    color = Color.LightGray,
                     size = size,
                     cornerRadius = CornerRadius(cornerRadius.toPx())
                 )
