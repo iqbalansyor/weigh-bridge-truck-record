@@ -49,13 +49,15 @@ class TrucksViewModel @Inject constructor(
 
             is TrucksEvent.DeleteTruck -> {
                 viewModelScope.launch {
-
+                    truckUseCases.deleteTruck(event.truck)
+                    recentlyDeletedTruck = event.truck
                 }
             }
 
-            is TrucksEvent.RestoreNote -> {
+            is TrucksEvent.RestoreTruck -> {
                 viewModelScope.launch {
-
+                    truckUseCases.addTruck(recentlyDeletedTruck ?: return@launch)
+                    recentlyDeletedTruck = null
                 }
             }
 
