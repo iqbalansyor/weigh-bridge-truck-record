@@ -96,20 +96,8 @@ class AddEditTruckViewModel @Inject constructor(
     fun onEvent(event: AddEditTruckEvent) {
         when (event) {
             is AddEditTruckEvent.EnteredTruckLicense -> {
-                if (event.value.length < 4) {
-                    _truckLicense.value = truckLicense.value.copy(
-                        isError = true,
-                        errorMessage = "License should be more than 4 char"
-                    )
-                } else {
-                    _truckLicense.value = truckLicense.value.copy(
-                        isError = false,
-                        errorMessage = ""
-                    )
-                }
-                _truckLicense.value = truckLicense.value.copy(
-                    text = event.value.toUpperCase(Locale.ROOT)
-                )
+                val eventText = event.value.toUpperCase(Locale.ROOT)
+                validateLicenseNumberFormat(eventText)
             }
 
             is AddEditTruckEvent.ChangeTruckLicenseFocus -> {
@@ -231,6 +219,149 @@ class AddEditTruckViewModel @Inject constructor(
                 errorMessage = ""
             )
         }
+    }
+
+    private fun validateLicenseNumberFormat(eventText: String) {
+        // check for 1 char
+        val firstChar = eventText.firstOrNull()
+        val isOnlyOne = eventText.length == 1
+        if (isOnlyOne && !Regex("[A-Z]").matches(firstChar.toString())) {
+            _truckLicense.value = truckLicense.value.copy(
+                isError = true,
+                errorMessage = "License should follow B1234XZ format"
+            )
+            return
+        }
+
+        // check for 3 char
+        val isTwo = eventText.length == 2
+        if (isTwo) {
+            val secondChar = eventText[1]
+            if (!Regex("[A-Z]").matches(firstChar.toString())
+                || !Regex("[0-9]").matches(secondChar.toString())) {
+                _truckLicense.value = truckLicense.value.copy(
+                    isError = true,
+                    errorMessage = "License should follow B1234XZ format"
+                )
+                return
+            }
+        }
+
+        // check for 3 char
+        val isThree = eventText.length == 3
+        if (isThree) {
+            val secondChar = eventText[1]
+            val thirdChar = eventText[2]
+            if (!Regex("[A-Z]").matches(firstChar.toString())
+                || !Regex("[0-9]").matches(secondChar.toString())
+                || !Regex("[0-9]").matches(thirdChar.toString())) {
+                _truckLicense.value = truckLicense.value.copy(
+                    isError = true,
+                    errorMessage = "License should follow B1234XZ format"
+                )
+                return
+            }
+        }
+
+        // check for 4 char
+        val isFour = eventText.length == 4
+        if (isFour) {
+            val secondChar = eventText[1]
+            val thirdChar = eventText[2]
+            val fourthChar = eventText[3]
+            if (!Regex("[A-Z]").matches(firstChar.toString())
+                || !Regex("[0-9]").matches(secondChar.toString())
+                || !Regex("[0-9]").matches(thirdChar.toString())
+                || !Regex("[0-9]").matches(fourthChar.toString())) {
+                _truckLicense.value = truckLicense.value.copy(
+                    isError = true,
+                    errorMessage = "License should follow B1234XZ format"
+                )
+                return
+            }
+        }
+
+        // check for 5 char
+        val isFive = eventText.length == 5
+        if (isFive) {
+            val secondChar = eventText[1]
+            val thirdChar = eventText[2]
+            val fourthChar = eventText[3]
+            val fifthChar = eventText[4]
+            if (!Regex("[A-Z]").matches(firstChar.toString())
+                || !Regex("[0-9]").matches(secondChar.toString())
+                || !Regex("[0-9]").matches(thirdChar.toString())
+                || !Regex("[0-9]").matches(fourthChar.toString())
+                || !Regex("[0-9]").matches(fifthChar.toString())) {
+                _truckLicense.value = truckLicense.value.copy(
+                    isError = true,
+                    errorMessage = "License should follow B1234XZ format"
+                )
+                return
+            }
+        }
+
+        // check for 6 char
+        val isSix = eventText.length == 6
+        if (isSix) {
+            val secondChar = eventText[1]
+            val thirdChar = eventText[2]
+            val fourthChar = eventText[3]
+            val fifthChar = eventText[4]
+            val sixthChar = eventText[5]
+            if (!Regex("[A-Z]").matches(firstChar.toString())
+                || !Regex("[0-9]").matches(secondChar.toString())
+                || !Regex("[0-9]").matches(thirdChar.toString())
+                || !Regex("[0-9]").matches(fourthChar.toString())
+                || !Regex("[0-9]").matches(fifthChar.toString())
+                || !Regex("[A-Z]").matches(sixthChar.toString())) {
+                _truckLicense.value = truckLicense.value.copy(
+                    isError = true,
+                    errorMessage = "License should follow B1234XZ format"
+                )
+                return
+            }
+        }
+
+        // check for 7 char
+        val isSeven = eventText.length == 7
+        if (isSeven) {
+            val secondChar = eventText[1]
+            val thirdChar = eventText[2]
+            val fourthChar = eventText[3]
+            val fifthChar = eventText[4]
+            val sixthChar = eventText[5]
+            val seventhChar = eventText[6]
+            if (!Regex("[A-Z]").matches(firstChar.toString())
+                || !Regex("[0-9]").matches(secondChar.toString())
+                || !Regex("[0-9]").matches(thirdChar.toString())
+                || !Regex("[0-9]").matches(fourthChar.toString())
+                || !Regex("[0-9]").matches(fifthChar.toString())
+                || !Regex("[A-Z]").matches(sixthChar.toString())
+                || !Regex("[A-Z]").matches(seventhChar.toString())) {
+                _truckLicense.value = truckLicense.value.copy(
+                    isError = true,
+                    errorMessage = "License should follow B1234XZ format"
+                )
+                return
+            } else {
+                _truckLicense.value = truckLicense.value.copy(
+                    isError = false,
+                    errorMessage = ""
+                )
+            }
+        }
+
+        if(eventText.length != 7) {
+            _truckLicense.value = truckLicense.value.copy(
+                isError = true,
+                errorMessage = "License should follow B1234XZ format"
+            )
+        }
+
+        _truckLicense.value = truckLicense.value.copy(
+            text = eventText
+        )
     }
 
     sealed class UiEvent {
