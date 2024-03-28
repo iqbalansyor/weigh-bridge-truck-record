@@ -112,7 +112,7 @@ fun TrucksScreen(
                     style = MaterialTheme.typography.h5
                 )
             }
-            if (state.trucks.isEmpty()) {
+            if (state.trucks.isNotEmpty()) {
                 AnimatedVisibility(
                     visible = true
                 ) {

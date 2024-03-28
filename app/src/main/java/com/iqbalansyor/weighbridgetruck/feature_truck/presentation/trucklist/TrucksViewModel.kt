@@ -66,6 +66,8 @@ class TrucksViewModel @Inject constructor(
                     isOrderSectionVisible = !state.value.isOrderSectionVisible
                 )
             }
+
+            else -> {}
         }
     }
 

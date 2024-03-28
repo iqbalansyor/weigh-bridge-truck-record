@@ -82,13 +82,14 @@ fun AddEditTruckScreen(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Truck Form",
+                text = "Truck Record Form",
                 style = MaterialTheme.typography.h5,
             )
             Spacer(modifier = Modifier.height(16.dp))
             TransparentHintTextField(
                 text = truckLicenseState.text,
                 hint = truckLicenseState.hint,
+                placeholder = "B1234XZ",
                 onValueChange = {
                     viewModel.onEvent(AddEditTruckEvent.EnteredTruckLicense(it))
                 },
@@ -96,7 +97,8 @@ fun AddEditTruckScreen(
                     viewModel.onEvent(AddEditTruckEvent.ChangeTruckLicenseFocus(it))
                 },
                 singleLine = true,
-                testTag = TestTags.LICENSE_TEXT_FIELD
+                testTag = TestTags.LICENSE_TEXT_FIELD,
+                errorMessage = truckLicenseState.errorMessage
             )
             TransparentHintTextField(
                 text = driverState.text,
@@ -108,6 +110,7 @@ fun AddEditTruckScreen(
                     viewModel.onEvent(AddEditTruckEvent.ChangeDriverFocus(it))
                 },
                 testTag = TestTags.DRIVER_TEXT_FIELD,
+                errorMessage = driverState.errorMessage
             )
             TransparentHintTextField(
                 text = inboundWeightState.text,
@@ -122,7 +125,8 @@ fun AddEditTruckScreen(
                 testTag = TestTags.INBOUND_WEIGHT_TEXT_FIELD,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
-                )
+                ),
+                errorMessage = inboundWeightState.errorMessage
             )
             TransparentHintTextField(
                 text = outboundWeightState.text,
@@ -137,12 +141,13 @@ fun AddEditTruckScreen(
                 testTag = TestTags.OUTBOUND_WEIGHT_TEXT_FIELD,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
-                )
+                ),
+                errorMessage = outboundWeightState.errorMessage
             )
             TransparentHintTextField(
                 text = netWeightState.text,
                 hint = netWeightState.hint,
-                errorMessage = if (netWeightState.isError) "error" else null,
+                errorMessage = netWeightState.errorMessage,
                 onValueChange = {},
                 placeholder = "0",
                 onFocusChange = {},

@@ -4,5 +4,6 @@ data class TruckTextFieldState(
     val text: String = "",
     val hint: String = "",
     val isHintVisible: Boolean = true,
-    val isError: Boolean = false
+    val isError: Boolean = false,
+    val errorMessage: String = ""
 )

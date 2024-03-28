@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,21 +37,21 @@ class AddEditTruckViewModel @Inject constructor(
 
     private val _inboundWeight = mutableStateOf(
         TruckTextFieldState(
-            hint = "Inbound Weight"
+            hint = "Inbound Weight (Ton)"
         )
     )
     val inboundWeight: State<TruckTextFieldState> = _inboundWeight
 
     private val _outboundWeight = mutableStateOf(
         TruckTextFieldState(
-            hint = "Outbound Weight"
+            hint = "Outbound Weight (Ton)"
         )
     )
     val outboundWeight: State<TruckTextFieldState> = _outboundWeight
 
     private val _netWeight = mutableStateOf(
         TruckTextFieldState(
-            hint = "Net Weight"
+            hint = "Net Weight (Ton)"
         )
     )
     val netWeight: State<TruckTextFieldState> = _netWeight
@@ -95,8 +96,19 @@ class AddEditTruckViewModel @Inject constructor(
     fun onEvent(event: AddEditTruckEvent) {
         when (event) {
             is AddEditTruckEvent.EnteredTruckLicense -> {
+                if (event.value.length < 4) {
+                    _truckLicense.value = truckLicense.value.copy(
+                        isError = true,
+                        errorMessage = "License should be more than 4 char"
+                    )
+                } else {
+                    _truckLicense.value = truckLicense.value.copy(
+                        isError = false,
+                        errorMessage = ""
+                    )
+                }
                 _truckLicense.value = truckLicense.value.copy(
-                    text = event.value
+                    text = event.value.toUpperCase(Locale.ROOT)
                 )
             }
 
@@ -108,6 +120,17 @@ class AddEditTruckViewModel @Inject constructor(
             }
 
             is AddEditTruckEvent.EnteredDriver -> {
+                if (event.value.length < 4) {
+                    _driver.value = driver.value.copy(
+                        isError = true,
+                        errorMessage = "Driver name should be more than 5 char"
+                    )
+                } else {
+                    _driver.value = driver.value.copy(
+                        isError = false,
+                        errorMessage = ""
+                    )
+                }
                 _driver.value = _driver.value.copy(
                     text = event.value
                 )
@@ -123,18 +146,34 @@ class AddEditTruckViewModel @Inject constructor(
             is AddEditTruckEvent.SaveTruck -> {
                 viewModelScope.launch {
                     try {
-                        truckUseCases.addTruck(
-                            Truck(
-                                licenseNumber = _truckLicense.value.text,
-                                driver = _driver.value.text,
-                                timestamp = System.currentTimeMillis(),
-                                inboundWeight = _inboundWeight.value.text.toFloatOrNull() ?: 0.0f,
-                                outboundWeight = _outboundWeight.value.text.toFloatOrNull() ?: 0.0f,
-                                id = if (currentTruckId == null) System.currentTimeMillis()
-                                    .toInt() else currentTruckId
+                        if (_truckLicense.value.isError
+                            || _driver.value.isError
+                            || inboundWeight.value.isError
+                            || outboundWeight.value.isError
+                            || netWeight.value.isError
+                        ) {
+                            _eventFlow.emit(
+                                UiEvent.ShowSnackbar(
+                                    message = "Please check your input"
+                                )
                             )
-                        )
-                        _eventFlow.emit(UiEvent.SaveTruck)
+                        } else {
+                            truckUseCases.addTruck(
+                                Truck(
+                                    licenseNumber = _truckLicense.value.text,
+                                    driver = _driver.value.text,
+                                    timestamp = System.currentTimeMillis(),
+                                    inboundWeight = _inboundWeight.value.text.toFloatOrNull()
+                                        ?: 0.0f,
+                                    outboundWeight = _outboundWeight.value.text.toFloatOrNull()
+                                        ?: 0.0f,
+                                    id = if (currentTruckId == null) System.currentTimeMillis()
+                                        .toInt() else currentTruckId
+                                )
+                            )
+
+                            _eventFlow.emit(UiEvent.SaveTruck)
+                        }
                     } catch (e: InvalidTruckException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
@@ -182,13 +221,14 @@ class AddEditTruckViewModel @Inject constructor(
         val outboundWeight = _outboundWeight.value.text.toFloatOrNull() ?: 0.0f
         if (outboundWeight < inboundWeight) {
             _netWeight.value = _netWeight.value.copy(
-                text = "outbound wieght should greater than inbound",
-                isError = true
+                isError = true,
+                errorMessage = "outbound wieght should greater than inbound"
             )
         } else {
             _netWeight.value = _netWeight.value.copy(
                 text = (outboundWeight - inboundWeight).toString(),
-                isError = false
+                isError = false,
+                errorMessage = ""
             )
         }
     }

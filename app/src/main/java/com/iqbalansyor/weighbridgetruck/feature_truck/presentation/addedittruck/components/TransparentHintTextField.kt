@@ -61,8 +61,14 @@ fun TransparentHintTextField(
         )
         if (!errorMessage.isNullOrBlank()) {
             Text(
+                modifier = Modifier.padding(
+                    start = 16.dp,
+                    top = 1.dp,
+                    bottom = 1.dp
+                ),
                 text = errorMessage,
-                color = Color.Red
+                color = Color.Red,
+                style = MaterialTheme.typography.caption
             )
         }
     }
