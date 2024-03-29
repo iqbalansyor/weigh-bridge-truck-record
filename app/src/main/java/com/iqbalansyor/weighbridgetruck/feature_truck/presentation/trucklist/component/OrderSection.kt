@@ -33,33 +33,6 @@ fun OrderSection(
     Column(
         modifier = modifier
     ) {
-//        Row(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalArrangement = Arrangement.SpaceEvenly
-//        ) {
-//            DefaultRadioButton(
-//                text = "Id",
-//                selected = truckOrder is TruckOrder.Id,
-//                onSelect = { onOrderChange(TruckOrder.Id(truckOrder.orderType)) }
-//            )
-//            Spacer(modifier = Modifier.width(8.dp))
-//            DefaultRadioButton(
-//                text = "Date",
-//                selected = truckOrder is TruckOrder.Date,
-//                onSelect = { onOrderChange(TruckOrder.Date(truckOrder.orderType)) }
-//            )
-//            Spacer(modifier = Modifier.width(8.dp))
-//
-//        }
-//        Spacer(modifier = Modifier.height(8.dp))
-//        Spacer(
-//            modifier = Modifier
-//                .height(1.dp)
-//                .fillMaxWidth()
-//                .padding(horizontal = 16.dp)
-//                .background(MaterialTheme.colors.primary)
-//        )
-//        Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly

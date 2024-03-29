@@ -2,12 +2,19 @@ package com.iqbalansyor.weighbridgetruck.feature_truck.presentation.trucks
 
 import androidx.lifecycle.SavedStateHandle
 import com.iqbalansyor.weighbridgetruck.MainDispatcherRule
+import com.iqbalansyor.weighbridgetruck.feature_truck.domain.model.Truck
 import com.iqbalansyor.weighbridgetruck.feature_truck.domain.usecase.TruckUseCases
 import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.addedittruck.AddEditTruckEvent
 import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.addedittruck.AddEditTruckViewModel
+import com.iqbalansyor.weighbridgetruck.feature_truck.presentation.trucklist.TrucksEvent
 import io.mockk.MockKAnnotations
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.just
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -71,4 +78,35 @@ class AddEditTruckViewModelTest {
         val outboundWeight = outboundTestValue.toFloatOrNull() ?: 0.0f
         assert(viewModel.netWeight.value.text == (outboundWeight - inboundWeight).toString())
     }
+
+    // TODO: Fix test
+//    @Test
+//    fun `onEvent with TrucksEvent SaveTruck should invoke usecase SaveTruck`() =
+//        runTest {
+//            val licenseTestValue = "b1234xz"
+//            val driverTestValue = "driver"
+//            val timestampTestValue = 1.toLong()
+//            val inboundTestValue = 1.0f
+//            val outboundTestValue = 2.0f
+//            val idTestValue = 1
+//            val truck = Truck(
+//                licenseNumber = licenseTestValue,
+//                driver = driverTestValue,
+//                timestamp = timestampTestValue,
+//                inboundWeight = inboundTestValue,
+//                outboundWeight = outboundTestValue,
+//                id = idTestValue
+//            )
+//            coEvery { truckUseCases.addTruck(truck) } just Runs
+//
+//            viewModel.onEvent(AddEditTruckEvent.EnteredTruckLicense(licenseTestValue))
+//            viewModel.onEvent(AddEditTruckEvent.EnteredDriver(driverTestValue))
+//            viewModel.onEvent(AddEditTruckEvent.EnteredInboundWeight(inboundTestValue.toString()))
+//            viewModel.onEvent(AddEditTruckEvent.EnteredOutboundWeight(outboundTestValue.toString()))
+//
+//            val event = AddEditTruckEvent.SaveTruck
+//            viewModel.onEvent(event)
+//
+//            coVerify { truckUseCases.addTruck(truck) }
+//        }
 }

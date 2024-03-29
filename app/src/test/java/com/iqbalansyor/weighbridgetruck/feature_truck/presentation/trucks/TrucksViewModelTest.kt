@@ -63,6 +63,7 @@ class TrucksViewModelTest {
 
     }
 
+    // TODO: Fix test
 //    @Test
 //    fun `onEvent with TrucksEvent Order should invoke getTrucks`() {
 //        val truckOrder = TruckOrder.Title(OrderType.Ascending)
