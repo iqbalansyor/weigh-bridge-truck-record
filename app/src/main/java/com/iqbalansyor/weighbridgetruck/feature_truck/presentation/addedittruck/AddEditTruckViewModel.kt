@@ -134,10 +134,10 @@ class AddEditTruckViewModel @Inject constructor(
             is AddEditTruckEvent.SaveTruck -> {
                 viewModelScope.launch {
                     try {
-                        if (_truckLicense.value.isError
-                            || _driver.value.isError
-                            || inboundWeight.value.isError
-                            || outboundWeight.value.isError
+                        if (_truckLicense.value.isError || _truckLicense.value.text.isBlank()
+                            || _driver.value.isError || _driver.value.text.isBlank()
+                            || inboundWeight.value.isError || inboundWeight.value.text.isBlank()
+                            || outboundWeight.value.isError || outboundWeight.value.text.isBlank()
                             || netWeight.value.isError
                         ) {
                             _eventFlow.emit(
