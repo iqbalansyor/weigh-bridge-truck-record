@@ -20,9 +20,3 @@
 
 ## Contact me
 * **Iqbal Ansyori** - [ansyori.iqbal@gmail.com](mailto:ansyori.iqbal@gmail.com)
-
-## Contributing
-Feel free to try it out. Please submit a pull request with any features/fixes for the project.
-
-## License
-This project is licensed under the MIT License - see the [MIT Open Source Initiative](https://opensource.org/licenses/MIT) for details.
