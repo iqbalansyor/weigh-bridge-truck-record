@@ -1,10 +1,13 @@
 package com.iqbalansyor.weighbridgetruck.feature_truck.presentation.addedittruck
 
+import android.content.ContentValues
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.database.FirebaseDatabase
 import com.iqbalansyor.weighbridgetruck.feature_truck.domain.model.InvalidTruckException
 import com.iqbalansyor.weighbridgetruck.feature_truck.domain.model.Truck
 import com.iqbalansyor.weighbridgetruck.feature_truck.domain.usecase.TruckUseCases
@@ -58,6 +61,9 @@ class AddEditTruckViewModel @Inject constructor(
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
+
+    private val database = FirebaseDatabase.getInstance()
+    private val ref = database.getReference("/list")
 
     private var currentTruckId: Int? = null
 
@@ -160,8 +166,29 @@ class AddEditTruckViewModel @Inject constructor(
                                 )
                             )
 
-                            _eventFlow.emit(UiEvent.SaveTruck)
+                            val itemId = if (currentTruckId == null) System.currentTimeMillis()
+                                .toInt() else currentTruckId // ID of the item you want to update
+
+                            val map = mutableMapOf(
+                                "id" to itemId,
+                                "driver" to driver.value.text,
+                                "licenseNumber" to _truckLicense.value.text,
+                                "inboundWeight" to (_inboundWeight.value.text.toFloatOrNull()
+                                    ?: 0.0f),
+                                "outboundWeight" to (_outboundWeight.value.text.toFloatOrNull()
+                                    ?: 0.0f)
+                            )
+                            // TODO: Move to another repository
+                            ref.child(itemId.toString()).updateChildren(map as Map<String, Any>)
+                                .addOnSuccessListener {
+                                    Log.e(ContentValues.TAG, "Error updating data")
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e(ContentValues.TAG, "Error updating data", e)
+                                }
                         }
+
+                        _eventFlow.emit(UiEvent.SaveTruck)
                     } catch (e: InvalidTruckException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
@@ -238,7 +265,8 @@ class AddEditTruckViewModel @Inject constructor(
         if (isTwo) {
             val secondChar = eventText[1]
             if (!Regex("[A-Z]").matches(firstChar.toString())
-                || !Regex("[0-9]").matches(secondChar.toString())) {
+                || !Regex("[0-9]").matches(secondChar.toString())
+            ) {
                 _truckLicense.value = truckLicense.value.copy(
                     isError = true,
                     errorMessage = "License should follow B1234XZ format"
@@ -254,7 +282,8 @@ class AddEditTruckViewModel @Inject constructor(
             val thirdChar = eventText[2]
             if (!Regex("[A-Z]").matches(firstChar.toString())
                 || !Regex("[0-9]").matches(secondChar.toString())
-                || !Regex("[0-9]").matches(thirdChar.toString())) {
+                || !Regex("[0-9]").matches(thirdChar.toString())
+            ) {
                 _truckLicense.value = truckLicense.value.copy(
                     isError = true,
                     errorMessage = "License should follow B1234XZ format"
@@ -272,7 +301,8 @@ class AddEditTruckViewModel @Inject constructor(
             if (!Regex("[A-Z]").matches(firstChar.toString())
                 || !Regex("[0-9]").matches(secondChar.toString())
                 || !Regex("[0-9]").matches(thirdChar.toString())
-                || !Regex("[0-9]").matches(fourthChar.toString())) {
+                || !Regex("[0-9]").matches(fourthChar.toString())
+            ) {
                 _truckLicense.value = truckLicense.value.copy(
                     isError = true,
                     errorMessage = "License should follow B1234XZ format"
@@ -292,7 +322,8 @@ class AddEditTruckViewModel @Inject constructor(
                 || !Regex("[0-9]").matches(secondChar.toString())
                 || !Regex("[0-9]").matches(thirdChar.toString())
                 || !Regex("[0-9]").matches(fourthChar.toString())
-                || !Regex("[0-9]").matches(fifthChar.toString())) {
+                || !Regex("[0-9]").matches(fifthChar.toString())
+            ) {
                 _truckLicense.value = truckLicense.value.copy(
                     isError = true,
                     errorMessage = "License should follow B1234XZ format"
@@ -314,7 +345,8 @@ class AddEditTruckViewModel @Inject constructor(
                 || !Regex("[0-9]").matches(thirdChar.toString())
                 || !Regex("[0-9]").matches(fourthChar.toString())
                 || !Regex("[0-9]").matches(fifthChar.toString())
-                || !Regex("[A-Z]").matches(sixthChar.toString())) {
+                || !Regex("[A-Z]").matches(sixthChar.toString())
+            ) {
                 _truckLicense.value = truckLicense.value.copy(
                     isError = true,
                     errorMessage = "License should follow B1234XZ format"
@@ -338,7 +370,8 @@ class AddEditTruckViewModel @Inject constructor(
                 || !Regex("[0-9]").matches(fourthChar.toString())
                 || !Regex("[0-9]").matches(fifthChar.toString())
                 || !Regex("[A-Z]").matches(sixthChar.toString())
-                || !Regex("[A-Z]").matches(seventhChar.toString())) {
+                || !Regex("[A-Z]").matches(seventhChar.toString())
+            ) {
                 _truckLicense.value = truckLicense.value.copy(
                     isError = true,
                     errorMessage = "License should follow B1234XZ format"
@@ -352,9 +385,9 @@ class AddEditTruckViewModel @Inject constructor(
             }
         }
 
-        if(eventText.length > 7) return
+        if (eventText.length > 7) return
 
-        if(eventText.length != 7) {
+        if (eventText.length != 7) {
             _truckLicense.value = truckLicense.value.copy(
                 isError = true,
                 errorMessage = "License should follow B1234XZ format"

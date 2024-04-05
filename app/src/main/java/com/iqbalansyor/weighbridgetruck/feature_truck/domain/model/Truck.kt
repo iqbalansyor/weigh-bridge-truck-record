@@ -7,11 +7,11 @@ import java.util.*
 
 @Entity
 data class Truck(
-    val licenseNumber: String,
-    val driver: String,
-    val timestamp: Long,
-    val inboundWeight: Float,
-    val outboundWeight: Float,
+    val licenseNumber: String = "",
+    val driver: String = "",
+    val timestamp: Long = 0,
+    val inboundWeight: Float = 0.0f,
+    val outboundWeight: Float = 0.0f,
     @PrimaryKey val id: Int? = null
 ) {
     fun getDisplayDate() : String {
