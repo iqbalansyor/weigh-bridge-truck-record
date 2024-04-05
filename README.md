@@ -8,7 +8,7 @@
 - MVVM for separate UI and business logic
 - Clean architecture (usecase, repository, and model)
 - Hilt for dependency injection
-- Room for handling local db (not yet sync to Firebase Realtime Storage)
+- Room for handling local db and sync with Firebase Realtime Storage
 - Unit testing for ViewModel & Repository
   
 ### Run the application
